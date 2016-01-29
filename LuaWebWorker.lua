@@ -11,8 +11,35 @@ local IFrameDir = WebDir.."iframe/"
 
 local CPower = DataProcessing.DataDir.."CurrentPower.txt";
 
-function UpdateGraph() 
+function UpdateGraph(Data) 
 	-- Update graph function
+	local Data = DataProcessing:GetEnergyData(Data);
+	local DataFileName = os.tmpname();
+	local DataFile = io.open(DataFileName, "w")
+	local PlotFileName = os.tmpname()
+	local PlotFile = io.open(PlotFileName, "w");
+	local TimeLast = Data[#Data][1];	
+	for i,v in pairs(Data) do
+		DataFile:write(((v[1]-TimeLast)/60).."\t"..v[2].."\n");
+	end
+	DataFile:flush()
+	local Body = "set term png size 1920,1080\n"
+	Body = Body .. "set output \""..IFrameDir.."DailyGraph\"\n"
+	
+	local function add(s) Body = Body .. s .. "\n" end
+
+	add("set xtics 60")
+	add("set style function filledcurves y1=0")
+	
+	Body = Body.."plot \""..DataFileName.."\" with filledcurves y1=0\n"
+	PlotFile:write(Body);
+	PlotFile:flush();
+	PlotFile:close();
+
+	os.execute("gnuplot "..PlotFileName)
+	-- Remove tmpfiles
+	os.remove(DataFileName)
+	os.remove(PlotFileName)
 end
 
 function UpdateCPower()
@@ -53,9 +80,10 @@ local Counter = 0;
 
 while true do
 	Counter = Counter + 1
-	if Counter == 20 then -- 20*3 = 60
+	if true or Counter == 20 then -- 20*3 = 60
 		-- Every minute, update the graph;
-		UpdateGraph()
+		local Data = DataProcessing:CollectData(60*60*24);
+		UpdateGraph(Data)
 		Counter=0
 	end
 	
@@ -71,6 +99,6 @@ while true do
 	UpdateCPower()
 	UpdateCCosts(Data)
 	UpdateCEnergy(Data)
-	--os.execute("sleep 3");
+	--os.execute("sleep 3")
 	break
 end

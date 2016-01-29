@@ -104,5 +104,19 @@ function Lib:GetKWH(Data)
 	return KWH;
 end
 
+-- returns: Time (s) and Energy (W) (so x and y values for graph use)
+function Lib:GetEnergyData(Data)
+	local Out = {}
+	for i,v in pairs(Data) do
+		if i == #Data then
+			break
+		end
+		local Time = Data[i+1];
+		local DTime = Time-v;
+		local Power = self:GetPower(DTime);
+		table.insert(Out, {Time, Power});
+	end
+	return Out;
+end
 
 return Lib 
