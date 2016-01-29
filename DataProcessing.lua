@@ -68,7 +68,8 @@ function Lib:CollectData(Delta, EndTime)
 	local Data_Out = {};
 	
 	for _, FileName in pairs(FileList) do
-		local file = io.open(FileName, r)
+		local file = io.open(DataDir..FileName, "r")
+		print(FileName,file)
 		if file then
 			while true do
 				local line = file:read("*n");

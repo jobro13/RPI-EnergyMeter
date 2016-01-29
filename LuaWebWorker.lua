@@ -33,6 +33,7 @@ end
 function UpdateCCosts(Data)
 	-- update current costs
 	local CCosts = DataProcessing:GetCosts(Data);
+	CCosts = math.floor((CCosts*1000)+0.5)/1000;
 	local wfile = io.open(IFrameDir.."DailyCosts", "w+");
 	wfile:write(CCosts)
 	wfile:flush()
@@ -41,6 +42,7 @@ end
 
 function UpdateCEnergy(Data)
 	local Energy = DataProcessing:GetKWH(Data);
+	Energy = math.floor((Energy*1000)+0.5)/1000;
 	local wfile = io.open(IFrameDir.."DailyPower", "w+");
 	wfile:write(Energy)
 	wfile:flush()
@@ -65,10 +67,10 @@ while true do
 	local StartTime = os.time(DateTable);
 	local Delta = TimeNow-StartTime;
 	local Data = DataProcessing:CollectData(Delta,TimeNow);
-	
+		
 	UpdateCPower()
 	UpdateCCosts(Data)
 	UpdateCEnergy(Data)
-	os.execute("sleep 3");
+	--os.execute("sleep 3");
 	break
 end
