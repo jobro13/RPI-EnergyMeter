@@ -31,7 +31,7 @@ function Lib:WriteNumber(number,file)
 	local wr = self:NumberEncode(number);
 	file:write(wr.."\n") -- write to file + seperator;
 	file:flush() -- save changes.
-	self.FileCache[file] = fname;
+	self.FileCache[fname] = file;
 	-- Have only one file open at a time.
 	for i,v in pairs(self.FileCache) do
 		if i ~= fname then

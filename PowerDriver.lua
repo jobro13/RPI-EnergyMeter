@@ -6,10 +6,10 @@ Lib = require "PowerLib";
 
 while true do
 	print("Waiting for pulse...")
-	--Lib:WaitForPulse()
-	--local Time = Lib:GetTimestamp()
+	Lib:WaitForHigh()
+	local Time = Lib:GetTimestamp()
 	Lib:WritePulse(Time)
 	print("Pulsed! Resetting now.")
-	--Lib:Reset()
+	Lib:Reset()
 end	
 	

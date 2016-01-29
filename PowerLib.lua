@@ -56,7 +56,7 @@ function OUT:WritePulse(Timestamp)
 	local N = math.floor(Timestamp)
 	local Date = os.date("*t", N);
 	local DStr = Date.day.."/"..Date.month.."/"..Date.year;
-	local FName = self:GetFilename("WritePulse", DSTr);
+	local FName = self:GetFilename("WritePulse", DStr);
 	self:WriteNumber(Timestamp, FName)
 end
 
