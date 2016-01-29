@@ -20,7 +20,7 @@ while true do
 	Lib:WritePulse(Time)
 	print("Pulsed! Resetting now.")
 	Lib:Reset()
-	os.execute("sleep 0.1")
+--	os.execute("sleep 0.1")
 	if Lib:IsHigh() then
 		os.execute("sleep 0.1")
 		if Lib:IsHigh() then
