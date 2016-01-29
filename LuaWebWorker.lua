@@ -24,7 +24,7 @@ function UpdateGraph(Data)
 	end
 	DataFile:flush()
 	local Body = "set term png size 1920,1080 transparent truecolor background '#85ccba'\n"
-	Body = Body .. "set output \""..IFrameDir.."DailyGraph.png\"\n"
+	Body = Body .. "set output \""..IFrameDir.."_DailyGraph.png\"\n"
 	
 	local function add(s) Body = Body .. s .. "\n" end
 
@@ -42,6 +42,7 @@ function UpdateGraph(Data)
 	-- Remove tmpfiles
 	os.remove(DataFileName)
 	os.remove(PlotFileName)
+	os.execute("mv "..IFrameDir.."_DailyGraph.png "..IFrameDir.."DailyGraph.png")
 end
 
 function UpdateCPower()
