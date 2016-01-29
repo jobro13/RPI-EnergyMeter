@@ -11,5 +11,15 @@ while true do
 	Lib:WritePulse(Time)
 	print("Pulsed! Resetting now.")
 	Lib:Reset()
+	os.execute("sleep 0.1")
+	if Lib:IsHigh() then
+		os.execute("sleep 0.1")
+		if Lib:IsHigh() then
+			print("warning: still is high")
+			repeat
+				os.execute("sleep 0.1")
+			until not Lib:IsHigh()
+		end
+	end
 end	
 	
