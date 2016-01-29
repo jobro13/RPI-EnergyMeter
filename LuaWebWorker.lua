@@ -23,7 +23,7 @@ function UpdateGraph(Data)
 		DataFile:write(((v[1]-TimeLast)/60).."\t"..v[2].."\t0xAAAAAA\n");
 	end
 	DataFile:flush()
-	local Body = "set term png size 1920,1080\n"
+	local Body = "set term png size 1920,1080 transparent truecolor background '#85ccba'\n"
 	Body = Body .. "set output \""..IFrameDir.."DailyGraph.png\"\n"
 	
 	local function add(s) Body = Body .. s .. "\n" end

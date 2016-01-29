@@ -7,30 +7,30 @@
 		<meta http-equiv="pragma" content="no-cache" />
 		<title>Energy Monitor</title>
 	</head>
-	<body>
+	<body style="background-color:#85ccba">
 		<center>
 		<H1>
 			Energy Monitor
 		</H1>
 		<br></br>
-		Current Power Usage (Watt):
+		<H2>Current Power Usage (Watt):</H2>
 		<br></br>
-		<iframe width=200px height=1em id=CurrentEnergy src=/iframe/CurrentPower onload="autoResize('CurrentEnergy');"></iframe>
+		<iframe width=200px height=1em id=CurrentEnergy src=/iframe/CurrentPower onload="autoResize('CurrentEnergy');" frameborder=0></iframe>
 		
 		<br></br>
-		Daily Energy Usage (kWh):
+		<H2>Daily Energy Usage (kWh):</H2>
 		<br></br>
-		<iframe width=200px height=1em id=DailyPower src=/iframe/DailyPower onload="autoResize('DailyPower');"></iframe>
+		<iframe width=200px height=1em id=DailyPower src=/iframe/DailyPower onload="autoResize('DailyPower');" frameborder=0></iframe>
 		
 		<br></br>
-		Daily Costs (Euro):
+		<H2>Daily Costs (Euro):</H2>
 		<br></br>
-		<iframe width=200px height=1em id=DailyCosts src=/iframe/DailyCosts onload="autoResize('DailyCosts');"></iframe>
+		<iframe width=200px height=1em id=DailyCosts src=/iframe/DailyCosts onload="autoResize('DailyCosts');" frameborder=0></iframe>
 		
 		<br></br>
-		Power usage of past 24 hours:
+		<H2>Power usage of past 24 hours:</H2>
 		<br></br>
-		<iframe width=200px height=1em id=DailyGraph src=/iframe/DailyGraph.png onload="autoResize('DailyGraph');"></iframe>
+		<iframe width=200px height=1em id=DailyGraph src=/iframe/DailyGraph.png onload="autoResize('DailyGraph');" frameborder=0></iframe>
 		
 		<script>
 			window.setInterval("reloadIFrames()", 3000);
@@ -38,7 +38,7 @@
 				document.getElementById("CurrentEnergy").src="/iframe/CurrentPower";
 				document.getElementById("DailyPower").src="/iframe/DailyPower";
 				document.getElementById("DailyCosts").src="/iframe/DailyCosts";
-				document.getElementById("DailyGraph").src="/iframe/DailyGraph";
+				document.getElementById("DailyGraph").src="/iframe/DailyGraph.png";
 			}
 		</script>
 		<script language="JavaScript">
