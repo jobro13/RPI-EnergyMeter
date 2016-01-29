@@ -20,7 +20,7 @@ function UpdateGraph(Data)
 	local PlotFile = io.open(PlotFileName, "w");
 	local TimeLast = Data[#Data][1];	
 	for i,v in pairs(Data) do
-		DataFile:write(((v[1]-TimeLast)/60).."\t"..v[2].."\n");
+		DataFile:write(((v[1]-TimeLast)/60).."\t"..v[2].."\t0xAAAAAA\n");
 	end
 	DataFile:flush()
 	local Body = "set term png size 1920,1080\n"
@@ -29,9 +29,11 @@ function UpdateGraph(Data)
 	local function add(s) Body = Body .. s .. "\n" end
 
 	add("set xtics 60")
-	add("set style function filledcurves y1=0")
-	
-	Body = Body.."plot \""..DataFileName.."\" with filledcurves y1=0\n"
+	add("set style fill pattern 3")
+	add("set linetype 1 linecolor variable")
+	add("set yrange [0:*]")
+	--filledcurves x1
+	Body = Body.."plot \""..DataFileName.."\" using 1:2:3 with filledcurves x1 fs solid 1\n"
 	PlotFile:write(Body);
 	PlotFile:flush();
 	PlotFile:close();
