@@ -24,7 +24,7 @@ function UpdateGraph(Data)
 	end
 	DataFile:flush()
 	local Body = "set term png size 1920,1080\n"
-	Body = Body .. "set output \""..IFrameDir.."DailyGraph\"\n"
+	Body = Body .. "set output \""..IFrameDir.."DailyGraph.png\"\n"
 	
 	local function add(s) Body = Body .. s .. "\n" end
 
