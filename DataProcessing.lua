@@ -56,7 +56,7 @@ function Lib:CollectData(Delta, EndTime)
 	end
 	
 	local CurTime = EndTime;
-	while CurTime - DailyDelta > StartTime do
+	while CurTime - DailyDelta >= StartTime do
 		CurTime = CurTime - DailyDelta - 1;
 		table.insert(Timestamps, 1, os.date("*t", CurTime));
 	end  
