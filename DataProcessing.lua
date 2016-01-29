@@ -22,7 +22,8 @@ end
 
 local RootLib = require "PowerLib";
 local DataDir = RootLib.Path .. RootLib.DataDir .. "/"
-
+Lib.DataDir = DataDir;
+Lib.RootPath = RootLib.Path;
 local DSLib = require "DSLib"; -- required for decoding;
 
 -- Returns Power given in Watts, given a time difference (DeltaTime) between two pulses
@@ -44,18 +45,20 @@ function Lib:CollectData(Delta, EndTime)
 	local DailyDelta = 60*60*24; -- how many seconds in a day?
 
 	local FileList = {};
-	local TimestampE = os.date(EndTime-1); --guarantees exclusion;
+	local TimestampE = os.date("*t", EndTime-1); --guarantees exclusion;
 	
 	local Timestamps = {TimestampE};
 	
 	local function DateToName(struct)
+		--print(struct)
+		--for i,v in pairs(struct) do print(i) end
 		return struct.day.."_"..struct.month.."_"..struct.year..".txt"
 	end
 	
 	local CurTime = EndTime;
 	while CurTime - DailyDelta > StartTime do
 		CurTime = CurTime - DailyDelta - 1;
-		table.insert(Timestamps, 1, os.date(CurTime));
+		table.insert(Timestamps, 1, os.date("*t", CurTime));
 	end  
 	
 	for i,v in pairs(Timestamps) do
@@ -82,5 +85,23 @@ function Lib:CollectData(Delta, EndTime)
 	end
 	return Data_Out
 end
+
+function Lib:GetCosts(Data)
+	local Costs = 0;
+	for i,v in pairs(Data) do
+		local PriceClass = self:GetPrice(os.date("*t", v));
+		local Price = self.Price[PriceClass];
+		local Cost = Price*self.KWHPerPulse;
+		Costs = Costs+Cost;
+	end
+	return Costs;
+end
+
+function Lib:GetKWH(Data)
+	local NumData = #Data;
+	local KWH = NumData * self.KWHPerPulse;
+	return KWH;
+end
+
 
 return Lib 
