@@ -19,15 +19,16 @@ end
 local DSLib = require "DSLib"; -- Data saving library;
 DSLib:Unpack(Lib); -- unpacks DSLib functions inside Lib;
 
-
-local GPIO = require "GPIO"
-GPIO.setwarnings(false);
-GPIO.setmode(GPIO.BOARD);
-print(PINS.Pulse, PINS.Read, PINS.Reset)
-for i,v in pairs(PINS) do print(i) end
-GPIO.setup(PINS.Read, GPIO.IN);
-GPIO.setup(PINS.Reset, GPIO.OUT);
-GPIO.setup(PINS.Pulse, GPIO.OUT);
+function Lib:GPIOInit()
+	GPIO = require "GPIO"
+	GPIO.setwarnings(false);
+	GPIO.setmode(GPIO.BOARD);
+	print(PINS.Pulse, PINS.Read, PINS.Reset)
+	for i,v in pairs(PINS) do print(i) end
+	GPIO.setup(PINS.Read, GPIO.IN);
+	GPIO.setup(PINS.Reset, GPIO.OUT);
+	GPIO.setup(PINS.Pulse, GPIO.OUT);
+end
 
 local OUT = Lib
 
@@ -58,6 +59,14 @@ function OUT:WritePulse(Timestamp)
 	local DStr = Date.day.."/"..Date.month.."/"..Date.year;
 	local FName = self:GetFilename("WritePulse", DStr);
 	self:WriteNumber(Timestamp, FName)
+end
+
+function OUT:WritePower(Power)
+	local filename = self.Path..self.DataDir.."/CurrentPower.txt"
+	f = io.open(filename, "w+");
+	f:write(Power);
+	f:flush()
+	f:close()
 end
 
 function OUT:Pulse(t)
