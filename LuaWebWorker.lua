@@ -83,7 +83,7 @@ local Counter = 0;
 
 while true do
 	Counter = Counter + 1
-	if true or Counter == 20 then -- 20*3 = 60
+	if Counter == 20 then -- 20*3 = 60
 		-- Every minute, update the graph;
 		local Data = DataProcessing:CollectData(60*60*24);
 		UpdateGraph(Data)
@@ -103,5 +103,5 @@ while true do
 	UpdateCCosts(Data)
 	UpdateCEnergy(Data)
 	--os.execute("sleep 3")
-	break
+	
 end
