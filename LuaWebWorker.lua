@@ -20,7 +20,7 @@ function UpdateGraph(Data)
 	local PlotFile = io.open(PlotFileName, "w");
 	local TimeLast = Data[#Data][1];	
 	for i,v in pairs(Data) do
-		DataFile:write(((v[1]-TimeLast)/60).."\t"..v[2].."\t0xAAAAAA\n");
+		DataFile:write(((v[1]-TimeLast)/3600).."\t"..v[2].."\t0xAAAAAA\n");
 	end
 	DataFile:flush()
 	local Body = "set term png size 1920,1080 transparent truecolor background '#85ccba'\n"
@@ -28,10 +28,13 @@ function UpdateGraph(Data)
 	
 	local function add(s) Body = Body .. s .. "\n" end
 
-	add("set xtics 60")
+	add("set xtics 1")
 	add("set style fill pattern 3")
 	add("set linetype 1 linecolor variable")
 	add("set yrange [0:*]")
+	add("set xrange [-24:0]");
+	add("set xlabel 'Time (hours ago)'")
+	add("set ylabel 'Power (W)'")
 	--filledcurves x1
 	Body = Body.."plot \""..DataFileName.."\" using 1:2:3 with filledcurves x1 fs solid 1\n"
 	PlotFile:write(Body);
@@ -79,11 +82,11 @@ function UpdateCEnergy(Data)
 	wfile:close()
 end
 
-local Counter = 0;
+local Counter = 19; -- force update graph @ start
 
 while true do
 	Counter = Counter + 1
-	if Counter == 20 then -- 20*3 = 60
+	if Counter >= 20 then -- 20*3 = 60
 		-- Every minute, update the graph;
 		local Data = DataProcessing:CollectData(60*60*24);
 		UpdateGraph(Data)
@@ -102,6 +105,6 @@ while true do
 	UpdateCPower()
 	UpdateCCosts(Data)
 	UpdateCEnergy(Data)
-	--os.execute("sleep 3")
+	os.execute("sleep 3")
 	
 end
