@@ -1,6 +1,14 @@
 local Lib = {}
 Lib.FileCache = {};
 
+-- Summary file:
+-- dd/mm/yy -> day
+-- Others could possibly be stored to... (week/month/year) but is that really necessary? Nah.
+
+--Lib.SummaryFileName = "Summary.txt" -- Unused
+
+local JSON = require "cjson"
+
 function Lib:Unpack(target)
 	for i,v in pairs(self) do
 		if target[v] then
@@ -41,6 +49,32 @@ function Lib:WriteNumber(number,file)
 	end			
 end
 
+
+
+-- Doesn't check for multiples!!
+function Lib:WriteSumarry(Identifier, Data, Filename)
+	if string.match(Identifier, ": ") then
+		error("Invalid identifier string: " .. tostring(Identifier));
+	end
+	local f = io.open(Filename, "a+") -- open in append mode;
+	local str = Identifier.. ": " .. JSON.decode(Data) .. "\n";
+	f:write(str);
+	f:flush()
+	f:close()
+end
+
+function Lib:GetSummary(Identifier, Filename)
+	if string.match(Identifier, ": ") then
+		error("Invalid identifier string: " .. tostring(Identifier));
+	end
+	
+	for line in io.lines(Filename) do
+		if line:match("^"..Identifier) then
+			local data = line:match("^"..Identifier..": (.*)");
+			return JSON.decode(data)
+		end
+	end	
+end
 
 
 return Lib
