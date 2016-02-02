@@ -4,7 +4,7 @@ return {
 				Daily = "Energy Monitor: Daily report of %s";
 				Weekly = "Energy Monitor: Weekly report of %s";
 				Monthly = "Energy Monitor: Monthly report of %s";
-				Yearly = "Energy Monitor: Yearly report of %s;
+				Yearly = "Energy Monitor: Yearly report of %s";
 			},
 		-- Recipients of the mail
 		Recipients = {
