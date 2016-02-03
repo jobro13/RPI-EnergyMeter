@@ -24,6 +24,7 @@ local RootLib = require "PowerLib";
 local DataDir = RootLib.Path .. RootLib.DataDir .. "/"
 Lib.DataDir = DataDir;
 Lib.RootPath = RootLib.Path;
+Lib.PowerLib = RootLib;
 local DSLib = require "DSLib"; -- required for decoding;
 
 -- Returns Power given in Watts, given a time difference (DeltaTime) between two pulses
@@ -87,15 +88,31 @@ function Lib:CollectData(Delta, EndTime)
 	return Data_Out
 end
 
-function Lib:GetCosts(Data)
+
+-- Extended mode:
+-- Returns a table:
+-- {[PriceClass] = {KWH = n; Costs = n;}, [PriceClass2] = {...}
+function Lib:GetCosts(Data, Extended)
 	local Costs = 0;
+	local ExtraVal;
 	for i,v in pairs(Data) do
 		local PriceClass = self:GetPrice(os.date("*t", v));
 		local Price = self.Price[PriceClass];
 		local Cost = Price*self.KWHPerPulse;
 		Costs = Costs+Cost;
+		if Extended then
+			if not ExtraVal then
+				ExtraVal = {}; -- inits extra return value;
+			end
+			if not ExtraVal[PriceClass] then
+				ExtraVal[PriceClass] = {KWH=0;Costs=0;};
+			end
+			-- Costs + KWH is saved. The prices might change.
+			ExtraVal[PriceClass].KWH = ExtraVal[PriceClass].KWH + self.KWHPerPulse;
+			ExtraVal[PriceClass].Costs = ExtraVal[PriceClass].Costs + Cost;
+		end
 	end
-	return Costs;
+	return Costs, ExtraVal;
 end
 
 function Lib:GetKWH(Data)
@@ -117,6 +134,10 @@ function Lib:GetEnergyData(Data)
 		table.insert(Out, {Time, Power});
 	end
 	return Out;
+end
+
+function Lib:DataIsEmpty(Data)
+	return #Data == 0 
 end
 
 return Lib 

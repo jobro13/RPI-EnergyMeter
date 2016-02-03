@@ -52,15 +52,20 @@ end
 
 
 -- Doesn't check for multiples!!
-function Lib:WriteSumarry(Identifier, Data, Filename)
+function Lib:WriteSummary(Identifier, Data, Filename)
 	if string.match(Identifier, ": ") then
 		error("Invalid identifier string: " .. tostring(Identifier));
 	end
+	if Lib:GetSummary(Identifier, Filename) then
+		print("Data is already present. No update functionality is present. Needs a manual update")
+		return false, "Data Identifier non-unique"
+	end
 	local f = io.open(Filename, "a+") -- open in append mode;
-	local str = Identifier.. ": " .. JSON.decode(Data) .. "\n";
+	local str = Identifier.. ": " .. JSON.encode(Data) .. "\n";
 	f:write(str);
 	f:flush()
 	f:close()
+	return true
 end
 
 function Lib:GetSummary(Identifier, Filename)

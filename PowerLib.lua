@@ -49,7 +49,8 @@ function OUT:GetFilename(Mode, Date)
 	if Mode == "WritePulse" then -- Write a pulse timestamp
 		return Root..Date:gsub("/", "_")..".txt" -- format is now 01_01_01
 	elseif Mode == "WriteSummary" then -- Write a summary (day/week/year)
-		-- yet to do
+		-- okay great, this is already here!
+		return Root.."Summary.txt";
 	end
 end
 
