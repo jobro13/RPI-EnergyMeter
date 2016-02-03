@@ -18,7 +18,7 @@ function Mail:SendMail(MsgBody, SubjectKey, SubjectFormat)
 	
 	local tmpname = os.tmpname();
 	local f = io.open(tmpname, "w+");
-	f:write("Subject: "..Subject.."\n");
+	f:write("Content-Type: text/html \r\nSubject: "..Subject.."\r\n\r\n");
 	f:write(MsgBody);
 	f:flush()
 	
